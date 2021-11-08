@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="manager">
+	
+<!-- 	부서리스트 -->
+	<select id="departmentList" resultClass="departmentVO">
+		SELECT *  FROM DEPARTMENT 
+	</select>
+	
+<!-- 	해당부서에 속해있는 직원리스트 조회 -->
+	<select id="departmentMemberList" parameterClass="int" resultClass="memberVO">
+		SELECT MEM_NO, MEM_NM FROM MEMBER
+		WHERE DEPT_NO = #dept_no#
+	</select>
+	
+	
+	
+
+</sqlMap>
+
+
+
+
+

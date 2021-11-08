@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="conference_reservation">
+
+	<!-- CONFERENCE(회의실예약) 테이블 데이터 생성 -->
+	<insert id="conferenceReservationInsert" parameterClass="conferenceVO">
+		insert into CONFERENCE_RESERVATION
+		values (SEQ_CONFERENCE_RESERVATION.NEXTVAL, #mem_no#, #con_no#, 
+				(select con_nm from CONFERENCE where con_no = #con_no#), #res_start#, 
+				to_timestamp(#res_end#))
+
+	</insert>
+	
+	<!-- CONFERENCE(회의실예약) 테이블 데이터 수정 -->
+	<update id="conferenceReservationUpdate" parameterClass="conferenceVO">
+		UPDATE CONFERENCE_RESERVATION 
+			SET CON_NO=#con_no# ,
+				CON_NM=#con_nm# ,
+				RES_END=#res_end# 
+		WHERE RES_NO=#res_no#
+	</update>
+	
+	<!-- CONFERENCE(회의실예약) 테이블 전체 데이터 조회 -->
+	<select id="getConferenceReservationList" resultClass="conferenceVO">
+		select a.*, (select b.mem_nm from member b where b.mem_no=a.mem_no ) mem_nm
+		from CONFERENCE_RESERVATION a
+	</select>
+	
+	<!-- CONFERENCE(회의실예약) 테이블 데이터 삭제 -->
+	<delete id="conferenceReservationDelete" parameterClass="conferenceVO">
+		DELETE FROM CONFERENCE_RESERVATION 
+		WHERE RES_NO=#res_no#
+	</delete>
+	
+	<!-- 오늘 회의실예약현황 -->
+	<select id="reservedConference" resultClass="conferenceVO">
+		SELECT A.*, (SELECT B.MEM_NM FROM MEMBER B WHERE B.MEM_NO=A.MEM_NO ) MEM_NM
+		FROM CONFERENCE_RESERVATION A
+		WHERE RES_START > TO_TIMESTAMP(TO_CHAR(TRUNC(SYSDATE),'YYYY/MM/DD HH24:MI:SS'))
+		AND TO_TIMESTAMP(TO_CHAR(TRUNC(SYSDATE,'DD') + 1,'YYYY/MM/DD HH24:MI:SS')) > RES_END 
+		ORDER BY 1
+	</select>
+
+<!-- 	예약하려는 시간대에 예약되어있는 회의실번호 조회 -->
+	<select id="reservedConNo" parameterClass="conferenceVO" resultClass="int">
+		SELECT CON_NO FROM CONFERENCE_RESERVATION
+		WHERE (TO_TIMESTAMP(#res_start#)BETWEEN RES_START AND RES_END)
+		 OR (TO_TIMESTAMP(#res_end#)BETWEEN RES_START AND RES_END)
+	</select>
+
+<!-- 	 해당 회의실예약을 한 직원번호 조회 -->
+	<select id="confirmResNo" parameterClass="conferenceVO" resultClass="int">
+		SELECT MEM_NO FROM CONFERENCE_RESERVATION
+		WHERE RES_NO = #res_no#
+	</select>
+	
+
+
+</sqlMap>
+
+
+
+
+

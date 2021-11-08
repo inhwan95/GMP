@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="confirmer">
+	<insert id="insert" parameterClass="confirmerVO">
+		insert into confirmer values(seq_confirmer.nextval,#san_no#, #mem_no#, #conf_step#, #conf_ok#, #conf_nm#)
+	</insert>	
+
+	<update id="update" parameterClass="confirmerVO">
+		update confirmer set 
+		<isNotEmpty prepend="," property="conf_step">
+			conf_step = #conf_step#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="conf_ok">
+			conf_ok = #conf_ok#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="conf_nm">
+			conf_nm = #conf_nm#
+		</isNotEmpty>
+		where san_no = #san_no#
+		and mem_no = #mem_no#
+	</update>
+
+	<delete id="delete" parameterClass="string">
+		delete table confirmer 
+		where conf_idx = #conf_idx#
+	</delete>
+
+
+
+
+
+</sqlMap>

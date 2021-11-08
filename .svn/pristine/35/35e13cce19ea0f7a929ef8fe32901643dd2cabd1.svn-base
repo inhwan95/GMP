@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="board">
+
+	<!-- BOARD 테이블 데이터 생성 -->
+	<insert id="boardInsert" parameterClass="boardVO">
+		INSERT INTO BOARD (BOARD_NO,MEM_NO,BOARD_NM,BOARD_TITLE,BOARD_WRITER,BOARD_CONTENT,BOARD_DATE) 
+			VALUES (SEQ_BOARD.NEXTVAL,#mem_no#,#board_nm#,#board_title#,#board_writer#, UTL_RAW.CAST_TO_RAW(#board_content#),SYSDATE)
+	</insert>
+	
+	<!-- BOARD(게시판) 테이블 데이터 수정 -->
+	<update id="boardUpdate" parameterClass="boardVO">
+		UPDATE BOARD 
+			SET BOARD_TITLE=#board_title# ,
+				BOARD_CONTENT=#board_content# 
+		WHERE BOARD_NO=#board_no#
+	</update>
+	
+	<!-- BOARD(게시판) 테이블 전체 데이터 조회 -->
+<!-- 	<select id="getBoardList2" resultClass="boardVO" parameterClass="string"> -->
+<!-- 		SELECT * FROM BOARD WHERE BOARD_NM=#board_nm# -->
+<!-- 	</select> -->
+
+
+	<select id="getBoardList" resultClass="boardVO" parameterClass="string">
+		SELECT board_no, mem_no, board_title, board_nm, board_writer, board_date, UTL_RAW.CAST_TO_VARCHAR2(board_content) FROM BOARD WHERE BOARD_NM=#board_nm#
+		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<!--  BOARD(게시판) 테이블 데이터 삭제 -->
+	<delete id="boardDelete" parameterClass="boardVO">
+		DELETE FROM BOARD WHERE BOARD_NO=#board_no#
+	</delete>
+	
+	<select id="findBoard" resultClass="boardVO" parameterClass="int">
+		SELECT board_no, mem_no, board_title, board_nm, board_writer, board_date, UTL_RAW.CAST_TO_VARCHAR2(board_content) FROM BOARD WHERE BOARD_NO=#board_no#
+	</select>
+	
+	<!-- 게시물번호 작성한 직원번호 조회 -->
+	<select id="boardWriter" parameterClass="boardVO" resultClass="int">
+		select mem_no from board
+		where board_no = #board_no#
+	</select>
+
+
+</sqlMap>

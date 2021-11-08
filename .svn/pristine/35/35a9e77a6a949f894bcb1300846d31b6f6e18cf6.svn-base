@@ -1,0 +1,114 @@
+package ddit.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.google.gson.Gson;
+
+import ddit.service.SanctionDocumentServiceImpl;
+import ddit.vo.MemberVO;
+import ddit.vo.SanctionDocumentVO;
+
+@WebServlet("/sanction/sanctionDocument.do")
+public class SanctionDocumentController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.getRequestDispatcher("/WEB-INF/view/sanctionDocument.jsp").forward(request, response);
+		
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		
+		HttpSession session = request.getSession();
+		
+		String documentSelect = request.getParameter("documentSelect");
+		String mem_id = (String) session.getAttribute("id");
+		int mem_no = (int) session.getAttribute("memNo");
+		
+		System.out.println("documentSelect"+documentSelect);
+//		int san_no =  Integer.parseInt(request.getParameter("san_no"));
+//		String san_nm = request.getParameter("san_nm");
+//		String san_write_date = request.getParameter("san_write_date");
+//		String san_conf_date = request.getParameter("san_conf_date");
+//		String san_content = request.getParameter("san_content");
+//		String san_deadline = request.getParameter("san_deadline");
+//		String san_status = request.getParameter("san_status");
+		
+		Gson gson = new Gson();
+		PrintWriter out = response.getWriter();
+		String jsonData = null;
+		
+		SanctionDocumentServiceImpl service = SanctionDocumentServiceImpl.getInstance();
+		MemberVO memVo = new MemberVO();
+		memVo.setMem_id(mem_id);
+		memVo.setMem_no(mem_no);
+		
+		List<SanctionDocumentVO> list = null;
+		
+		switch (documentSelect){
+		case "휴가신청서" :
+			list = service.getSanDocList(documentSelect);
+			jsonData = gson.toJson(list);
+			out.print(jsonData);
+			response.flushBuffer();
+			break;
+		case "회의보고서" :
+			list = service.getSanDocList(documentSelect);
+			jsonData = gson.toJson(list);
+			out.print(jsonData);
+			response.flushBuffer();
+			break;
+		case "주간업무보고서" :
+			list = service.getSanDocList(documentSelect);
+			jsonData = gson.toJson(list);
+			out.print(jsonData);
+			response.flushBuffer();
+			break;
+		case "지출결의서" :
+			list = service.getSanDocList(documentSelect);
+			jsonData = gson.toJson(list);
+			out.print(jsonData);
+			response.flushBuffer();
+			break;
+		case "기안서" :
+			list = service.getSanDocList(documentSelect);
+			jsonData = gson.toJson(list);
+			out.print(jsonData);
+			response.flushBuffer();
+			break;
+		case "품의서" :
+			list = service.getSanDocList(documentSelect);
+			jsonData = gson.toJson(list);
+			out.print(jsonData);
+			response.flushBuffer();
+			break;
+		case "사직서" :
+			list = service.getSanDocList(documentSelect);
+			jsonData = gson.toJson(list);
+			out.print(jsonData);
+			response.flushBuffer();
+			break;
+			
+		default :
+			break;
+			
+		}
+		
+	}
+
+}

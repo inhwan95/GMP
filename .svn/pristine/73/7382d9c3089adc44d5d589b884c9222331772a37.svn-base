@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="entrance">
+
+	<!-- ENTRANCE(출입대장) 테이블 데이터 생성 -->
+	<insert id="entranceInsert" parameterClass="entranceVO">
+		INSERT INTO ENTRANCE (ESEC_IDX,ENTER_TIME,LEAVE_TIME,ENT_NM) 
+			VALUES (SEQ_ENTRANCE.NEXTVAL,SYSDATE,SYSDATE,#ent_nm#)
+	</insert>
+	
+	<!-- ENTRANCE(출입대장) 테이블 전체 데이터 조회 -->
+	<select id="getEntranceList" resultClass="entranceVO">
+		SELECT * FROM ENTRANCE
+	</select>
+	
+
+
+
+
+
+
+</sqlMap>

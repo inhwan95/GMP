@@ -1,0 +1,633 @@
+<%@page import="ddit.vo.BoardVO"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@200&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="../css/board.css">
+
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/conference.js"></script>
+<!--   <script src="../js/board.js"></script> -->
+<style>
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+	height: 550px
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+	background-color: #f1f1f1;
+	height: 100%;
+}
+
+/* On small screens, set height to 'auto' for the grid */
+@media screen and (max-width: 767px) {
+	.row.content {
+		height: auto;
+	}
+}
+
+#divsel {
+	background-color: rgb(255 255 255/ 53%);
+	position: relative;
+}
+
+#divsel::before {
+	background-image: url(../images/company.JPG);
+	content: '';
+	opacity: 0.5;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+#containerdiv {
+	
+}
+
+.bigData {
+	display : flex;
+}
+</style>
+
+</head>
+<%
+HttpSession getsession = request.getSession();
+String mem_id = (String) getsession.getAttribute("id");
+// List<BoardVO> list = (List<BoardVO>)request.getAttribute("boardList");
+// String boardNm = null;
+%>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"></a>
+				<div id="navbar-brand">
+					<img src="../images/logo.JPG" width="15%" height="5%"><br>
+				</div>
+			</div>
+			<form action="Login.jsp">
+				<div class="collapse navbar-collapse" id="myNavbar">
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+					</ul>
+				</div>
+			</form>
+		</div>
+	</nav>
+
+
+
+	<div id="containerdiv" class="container-fluid">
+		<div class="row content">
+			<div id="divsel">
+				<!-- style="background-color: rgb(255 255 255 / 53%)" -->
+				<div class="col-sm-3 sidenav hidden-xs">
+					<h2>Menu</h2>
+					<ul class="nav nav-pills nav-stacked">
+						<li class="active"><a href="#section1">Main Page</a></li>
+						<li id="company"><a href="#section2">회사정보</a></li>
+						<li><a href="#section3">근태관리</a></li>
+						<li><a href="#section3">채팅</a></li>
+						<li><a href="#section3">Calendar</a></li>
+						<li><a href="#section3">전자결재</a></li>
+						<li id="conference"><a>회의실</a></li>
+						<li id="notiBtn"><a>공지사항</a></li>
+						<li id="freeBtn"><a>자유게시판</a></li>
+						<li id="manager"><a>관리자 페이지</a></li>
+					</ul>
+					<br>
+				</div>
+				<br>
+
+				<article>
+					<div class="col-sm-9">
+						<div class="well">
+							<h4>Na's Company</h4>
+							<p>Company Introduction</p>
+						</div>
+					</div>
+				</article>
+				<div class="col-lg-12"></div>
+
+
+				<div class="row bg">
+
+					<div class="col-sm-4">
+						<div class="well">
+							<p>공지사항</p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="well">
+							<p>Calendar</p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="well">
+							<p>To Do List</p>
+						</div>
+					</div>
+
+				</div>
+
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<footer class="container-fluid text-center">
+		<p>회사: 대전광역시 중구 대흥동 / 대표 : 이나영</p>
+		<p>고객센터 : 1588-1159 / mail : abcd@naver.com</p>
+		<p>사업자번호 : 314-86-24510</p>
+	</footer>
+
+	<script type="text/javascript">
+//----------------------------------------------------------------------------관리자
+	$('#manager').on('click',manager);
+		
+	function manager(){
+		let managerCode = "";
+		managerCode += "<input type='button' id='memLookUp' name='memLookUp' value='직원정보관리'>";
+		managerCode += "<input type='button' id='memSalary' name='memSalary' value='직원급여관리'>";
+		managerCode += "<input type='button' id='memWork' name='memWork'  value='직원근태관리'><hr>";
+		managerCode += "<div id='myDiv' class='col-lg-10' name='myDiv' > </div><hr>";
+		
+		$('.col-lg-12').html(managerCode);	
+		
+		$('#memLookUp').on('click',memLookUp);
+		$('#memSalary').on('click',memSalary);
+		$('#memWork').on('click',memWork);
+	}
+
+	function memLookUp(){					// 직원정보관리
+		
+				let lookCode ="";
+// 				lookCode +="<input type='button' id='memLookUp' name='memLookUp' value='직원정보관리'>"; 
+// 				lookCode +="<input type='button' id='memSalary' name='memSalary' value='직원급여관리'>"; 
+// 				lookCode +="<input type='button' id='memWork' name='memWork'  value='직원근태관리'><hr>";
+// 				lookCode +="<div id='myDiv' class='col-lg-10' name='myDiv' > </div><hr>";             
+				lookCode +="<div>직원정보조회</div>";
+
+		$.ajax({
+			url : '<%=request.getContextPath() %>/manage/manage.do',
+			type : 'post',
+			data : {
+				"choice" : "departList"
+			},
+		
+			success : function(res){
+				console.log(res)
+				
+				lookCode +="	<table border='0' cellpadding='0' cellspacing='0'>";
+				lookCode +="		<tbody><tr>";
+				lookCode +="			<td> <select id='sel1' name='sel1' onchange='update_cate1()'c style='width:140px;' onclick='departMember();'>";
+				
+				$.each(res, function(i,v){
+					lookCode +="				<option value='"+ v.dept_no +"'>"+ v.dept_nm +"</option>";
+				});
+				
+				lookCode +="</td></tr>";
+				lookCode +="</tbody>";
+				lookCode +="</table>";
+				lookCode +="<div id='bigData' class='bigData' name='bigData'>";
+				lookCode +="	<div id='data' class='data' name='data'></div>";
+				lookCode +="	<div id='detail' class='detail' name='detail'></div></div>";
+			 			
+				$('#myDiv').html(lookCode);
+				
+				$('#memLookUp').on('click',memLookUp);
+				$('#memSalary').on('click',memSalary);
+				$('#memWork').on('click',memWork);
+
+			},
+			dataType : 'json',
+			
+			error : function(xhr){
+				console.log(xhr);
+			}
+		});
+	}
+	
+	function departMember(){
+		
+		let department = $("#sel1 option:selected").val();
+		
+		console.log(department);
+		
+		$.ajax({
+			url :  '<%=request.getContextPath() %>/manage/manage.do',
+			type : 'post',
+			data : {
+				"choice" : "departMember",
+				"department" : department
+			},
+			success : function(res){
+				console.log(res);		
+
+				let code = "<br>";
+				code += "<table border='1' id='dept-mem' width='100px' >";
+				code += "<thead><tr><td></td><td>이름</td></tr></thead><tbody>";
+				$.each(res, function(i,v){
+					code += "<tr><td>"+(i+1)+"</td><td class='memNo'><a href='javascript:void(0);' onclick='deptMemDetail("+v.mem_no+")'>"+v.mem_nm+"</td></tr>";
+				});
+				
+				code += "</tbody>";
+				code += "</table>";
+				
+				$('#data').html(code);
+				
+			},
+			dataType : 'json',
+			
+			error : function(xhr){
+				console.log(xhr);
+			}			
+		});
+	}
+	
+	function deptMemDetail(memNo){
+		console.log(memNo);
+		 let code = "<br>";
+		 code += "<table border='1' id='dept-mem-detail' >";
+		 code += "<thead><tr><td>직원번호</td><td>이름</td><td>전화번호</td>";
+		 code += "<td>직급</td><td>부서</td><td>생년월일</td><td>주소</td><td>메일</td><td>";
+		 code += "</tr></thead>";
+		
+		 $.ajax({
+			url : '<%=request.getContextPath()%>/manage/manage.do',
+			type : 'post',
+			data : {
+				"choice" : "deptDetail",
+				"memNo" : memNo
+			},
+			success : function(res){
+				console.log(res);
+				
+				
+				
+				
+				
+			},
+			dataType : 'json',
+			error : function(xhr){
+				console.log(xhr);
+			}
+			 
+			 
+		 });
+		
+	}
+	
+	
+	
+	
+//-------------------------------------------------------------------------------------회의실
+	function deleteRes(resNo){
+		
+		if(!confirm("해당 예약을 취소하시겠습니까?")){
+			return false;
+		}
+		
+		
+		$.ajax({
+			url : '<%=request.getContextPath()%>/conference/conferenceList.do',
+			type : 'post',
+			data : {
+				"choice" : "delete",
+				"resNo" : resNo
+			},
+			success : function(res){
+				if (res > 0) {
+					alert("삭제 성공");
+				} else {
+					alert("본인이 예약한 회의실이 아닙니다.!!!");
+				}
+				showList();
+			}, 
+			
+			dateType : 'json',
+			
+			error : function(xhr){
+				console.log(xhr);
+			}
+			
+		});
+	
+}
+  			
+	function res(){
+		$('#resBtn').on('click',function(){
+			let bookcode = "";
+			bookcode +="	<input type='datetime-local' id='startTime' name='startTime'><br>";
+			bookcode +="	<input type='datetime-local' id='endTime' name='endTime'><br>";
+			bookcode +="	<select name='conferenceRoom' id='conferenceRoom'>";
+			bookcode +="		<option value='1'>회의실1</option>";
+			bookcode +="		<option value='2'>회의실2</option>";
+			bookcode +="		<option value='3'>회의실3</option>";
+			bookcode +="		<option value='4'>회의실4</option>";
+			bookcode +="		<option value='5'>회의실5</option>";
+			bookcode +="		<option value='6'>회의실6</option>";
+			bookcode +="		<option value='7'>회의실7</option>";
+			bookcode +="	</select>";
+			bookcode +="	<hr>";
+			bookcode +="	<input type='button' id='btn' value='예약' >";
+			$('.col-lg-12').html(bookcode);	
+			
+			
+			$('#btn').on('click', function(){
+				
+				let startTime = $('#startTime').val();
+				let endTime = $('#endTime').val();
+				let conference = $("#conferenceRoom option:selected").val();
+				console.log(startTime);
+				console.log(endTime);
+				console.log(conference);
+				
+				$.ajax({
+					url : '<%=request.getContextPath() %>/conference/conferenceList.do',
+					type : 'post',
+					data : {
+						"choice" : "reserve",
+						"startTime" : startTime,
+						"endTime" : endTime,
+						"conferenceRoom" : conference
+					},
+					success : function(res){
+						showList();		
+						
+					},
+					dataType : "json",
+					
+					error : function(xhr){
+						console.log(xhr);
+					}
+					
+				});
+			});
+			
+			
+		});
+	}
+	
+	
+	
+$('#conference').on('click',showList);
+
+function showList(){
+	$.ajax({
+		url : '<%=request.getContextPath() %>/conference/conferenceList.do',
+		type : 'post',
+		data : {
+			"choice" : "list"
+		},
+		success : function(res){
+			let code  = "<table border='1'>";
+			 code += "<thead>";
+			 code += "<tr>";
+			 code += "	<th>예약번호</th><th>직원번호</th><th>이 름</th><th>회의실번호</th><th>시작시간</th><th>종료시간</th>";
+			 code += "</tr>";
+			 code += "</thead>";
+			 code += "<tbody>";
+			
+			$.each(res, function(i,v){
+				code +="<tr><td><a href='javascript:void(0);' onclick='deleteRes("+v.res_no+");'>" + v.res_no +"</a></td>";
+				code +="<td>" + v.mem_no +"</td>";
+				code +="<td>" + v.mem_nm +"</td>";
+				code +="<td>" + v.con_no +"</td>";
+				code +="<td>" + v.res_start.toString().split(":")[0]+":"+ v.res_start.toString().split(":")[1] +"</td>";
+				code +="<td>" + v.res_end.toString().split(":")[0]+":"+ v.res_end.toString().split(":")[1]  +"</td></tr>";
+			});
+			code += "</tbody></table><input type='button' id='resBtn' onclick='res();' value='예약하기'>";
+//				code += "</tbody></table><input type='button' id='conDelBtn' onclick='deleteRes();' value='예약취소'>";
+			$('.col-lg-12').html(code);	
+			console.log(res);	
+		},
+		error : function(xhr){
+			console.log(xhr);
+			console.log(xhr.status);
+		},
+		dataType:'json'
+	});
+}
+
+//////////////////////////////////////////////////////////////// 여기부턴 이인환
+
+
+		$('#freeBtn').on('click', freeList);
+		$('#notiBtn').on('click', noticeList);
+// 		$('.detail').on('click', detailBoard);
+		
+		
+ 	/////////////////////////////////////////
+
+function noticeList(){
+	$.ajax({
+      url : '<%=request.getContextPath()%>/board/board.do',
+      type : 'post',        
+      data : {
+    	 "choice" : "공지"
+      },
+    	 dataType : "json",
+	     success : function(res){
+			console.log(res);
+				
+			let str = "";
+			str += "<ol>";
+			$.each(res, function(i,v){
+			str += "<li>";
+				str += "제목 : " + v.board_title;
+				str += "<br>";
+				str += "저자 : " + v.board_writer;
+				str += "<br><hr>";
+			str += "</li>";
+			});
+			str += "</ol>";
+			str += "<input type='button' class='boardInsertBtn' value='게시글 추가'/>";
+			$('.col-lg-12').html(str);
+			$('.boardInsertBtn').on('click', boardInsert);
+          },
+	        
+	        error :function(xhr){
+				console.log(xhr);
+				console.log(xhr.status);
+	        }
+	    });
+	  }
+ 	/////////////////////////////////////////
+function freeList(){
+ 		let board_noArr = new Array();
+ 		
+	 $.ajax({
+	      url : '<%=request.getContextPath()%>/board/board.do',
+	      type : 'post', 
+	      data : {
+	    	  "choice" : "자유"
+	    	  },
+        dataType : "json",
+	      success : function(res){
+				console.log(res);
+					
+				let str = "";
+				str += "<ol>";
+				$.each(res, function(i,v){
+				board_noArr.push( v.board_no );
+				str += "<li id= li"+ v.board_no +" class='detail' onclick='f_detail(\""+v.board_no+"\");'>";
+				str +="<input type='hidden' id='borNo' name='borNo'value='"+v.board_no+"'>";
+// 					str += "board_no : " + v.board_no;
+					str += "제목 : " + v.board_title;
+					str += "<br>";
+					str += "저자 : " + v.board_writer;
+					str += "<br><hr>";
+				str += "</li>";
+				});
+// 				console.log(board_noArr);
+// 				detail(board_noArr);
+				str += "</ol>";
+				str += "<input type='button' class='boardInsertBtn' value='게시글 추가'/>";
+				$('.col-lg-12').html(str);
+				$('.boardInsertBtn').on('click', boardInsert);
+				
+				
+	        },
+	        
+	        error :function(xhr){
+				console.log(xhr);
+				console.log(xhr.status);
+	        }
+	    });
+	  }
+		
+ 	function f_detail(board_no){
+ 		console.log("f_detail" + board_no);
+ 		$.ajax({
+			url : '<%=request.getContextPath() %>/board/board.do',
+	 	    type : 'post', 
+	 	    data : {
+	 	    	"choice" : "세부",
+	 	    	"board_no"	 : board_no
+	 	    },
+	 	    dataType : "json",
+	 	    success : function(res){
+	 	    	let str = "";
+ 				str += "<ul>";
+ 				str += "<li>";
+					str += "제목 : " + res.board_title;
+					str += "<br>";
+					str += "저자 : " + res.board_writer;
+					str += "<br>";
+					str += "내용 : " + res.board_content;
+					str += "<br>";
+					str += "날짜 : " + res.board_date;
+					str += "<br>";
+				
+					str += "<br><hr>";
+ 				str += "</li>";
+ 				str += "</ul>";
+ 				str += "<input type='button' class='boardDeleteBtn' value='게시글 삭제'/>";
+ 				$('.col-lg-12').html(str);
+	 				$('.boardDeleteBtn').on('click', boardDelete(board_no));
+	 	    },
+	 	    error : function(xhr) {
+	 	    	console.log(xhr);
+	 	    	console.log(xhr.status);
+	 	    }
+
+		});
+ 	}
+ 	
+
+function boardInsert(){
+	let str = "";
+// 	str += "<input type='text' placeholder='게시물 유형' id='board_nm' name='board_nm' maxlength='20'>";
+		str +="	<select name='board_nm' id='board_nm'>";
+		str +="		<option value='자유'>자유</option>";
+		str +="		<option value='공지'>공지</option>";
+		str +="	</select>";
+	str += "<input type='text' placeholder='게시물 제목' id='board_title' name='board_title' maxlength='20'>";
+// 	str += "<input type='text' placeholder='글쓴이' id='board_writer' name='board_writer' maxlength='20'>";
+	str += "<input type='text' placeholder='게시물 내용' id='board_content' name='board_content' maxlength='20'>";
+	
+	str += "<input type='button' id='boardInsert' value='추가'></input>";
+
+	$('.col-lg-12').html(str); 
+				
+$('#boardInsert').on('click', function(){
+	let board_nm = $('#board_nm').val();
+	let board_title = $('#board_title').val();
+// 	let board_writer = $('#board_writer').val();
+	let board_content = $('#board_content').val();
+	
+	console.log(board_nm);
+	
+	
+	 $.ajax({
+	 	url : '<%=request.getContextPath()%>/board/board.do',
+		    type : 'post', 
+		    data : {
+		    	"board_nm" : board_nm,
+		    	"board_title" : board_title,
+// 		    	"board_writer" : board_writer,
+		    	"board_content" : board_content
+		    },
+		    success : function(res){
+				freeList(); 
+			},
+	        dataType : "json",
+	        
+			error : function(xhr){
+				console.log(xhr);
+			}
+		});
+	});
+}
+
+
+
+function boardDelete(board_no){
+	console.log("보드넘버"+board_no);
+	 $.ajax({
+	 	url : '<%=request.getContextPath()%>/board/board.do',
+		    type : 'post', 
+		    data : {
+				"choice" : "삭제",
+				"board_no" : board_no
+		    },
+	        dataType : "json",
+		    success : function(res){
+		    	console.log('아무거ㅏ니');
+// 				freeList();
+			},
+	        
+			error : function(xhr){
+				console.log(xhr);
+			}
+		});
+}
+			
+  </script>
+
+</body>
+</html>

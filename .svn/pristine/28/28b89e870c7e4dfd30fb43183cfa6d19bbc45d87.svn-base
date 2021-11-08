@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+.kakao-login-btn{
+   padding-right: 50px;
+}
+
+.navigation{
+   height: 100px;
+}
+
+.jumbotron{
+
+   position: absolute;
+   top: 50%;
+   display: flex;
+   margin-top: 150px;  
+   text-align: center; 
+   margin-left: -300px;	
+   left: 50%;
+     
+
+}
+
+#form{
+   width: 500px;
+}
+
+.logout{
+   list-style: none;
+}
+
+.col-lg-4{
+   display: inline-block;
+}
+
+.navbar-header{
+   padding: 0% 40%;
+   justify-content: center;
+}
+
+.navbar-default{
+   border-bottom: 1px solid gray;
+
+}
+.main{
+   display: flex;
+   flex-direction: column;
+   gap: 30px;
+}
+
+.navbar-brand{
+   padding: 100px;
+   width: 300px;   
+}
+
+/* 로고 사진 */
+
+/* .navbar-header{ */
+/*    display: flex; */
+/*    gap: 40px; */
+/*    width: 300px; */
+/*    height: 150px; */
+/* } */
+
+.navbar-brand{
+   font-family: 'IBM Plex Sans KR', sans-serif;
+   color: black;
+   font-weight: 800;
+   font-size: 60px;
+}

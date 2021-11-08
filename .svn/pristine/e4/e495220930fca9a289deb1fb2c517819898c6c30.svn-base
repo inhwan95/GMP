@@ -1,0 +1,114 @@
+package ddit.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.google.gson.Gson;
+
+import ddit.service.ManagerServiceImpl;
+import ddit.vo.DepartmentVO;
+import ddit.vo.MemberVO;
+
+@WebServlet("/manage/manage.do")
+public class ManageController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/view/manager.jsp").forward(request, response);
+		
+	
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+
+		Gson gson = new Gson();
+		PrintWriter out = response.getWriter();
+		String jsonData = null;
+		HttpSession session = request.getSession();
+		ManagerServiceImpl service = ManagerServiceImpl.getInstance();
+		
+		int mem_no = (int) session.getAttribute("memNo");
+		int mem_auth = (int) session.getAttribute("auth");
+			
+		String choice = request.getParameter("choice");
+		System.out.println(choice);
+		
+		switch (choice) {
+		
+			case "departList":
+				
+				List<DepartmentVO> list = service.departmentList();
+				System.out.println(list);
+				
+				jsonData = gson.toJson(list);
+				out.print(jsonData);
+				System.out.println(jsonData);
+				response.flushBuffer();
+				break;
+	
+			case "departMember":
+				
+				String depart = (String) request.getParameter("department");
+				int departNo = Integer.parseInt(depart);
+				
+				List<MemberVO> list2 = service.departmentMember(departNo); 
+				System.out.println(list2);
+				
+				jsonData = gson.toJson(list2);
+				out.print(jsonData);
+				System.out.println(jsonData);
+				response.flushBuffer();
+				
+				break;
+			
+			case "deptDetail":
+				
+				String No = request.getParameter("memNo");
+				System.out.println(No);
+				int memNo = Integer.parseInt(No);
+				
+				List<MemberVO> list3 = service.departMemberInfo(memNo);
+				System.out.println(list3);
+				
+				jsonData = gson.toJson(list3);
+				out.print(jsonData);
+				System.out.println(jsonData);
+				response.flushBuffer();
+				
+				break;
+				
+		}
+	
+	
+	
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="manager">
+	
+<!-- 	부서리스트 -->
+	<select id="departmentList" resultClass="departmentVO">
+		SELECT *  FROM DEPARTMENT 
+	</select>
+	
+<!-- 	해당부서에 속해있는 직원리스트 조회 -->
+	<select id="departmentMemberList" parameterClass="int" resultClass="memberVO">
+		SELECT MEM_NO, MEM_NM FROM MEMBER
+		WHERE DEPT_NO = #dept_no#
+	</select>
+	
+<!-- 	선택된 직원의 상세정보 -->
+	<select id="deptMemberDetail" parameterClass="int" resultClass="memberVO">
+		SELECT D.INFO_NO, A.MEM_NO, A.MEM_NM, A.MEM_TEL, B.POSI_NM, C.DEPT_NM, A.MEM_BIRTH, A.MEM_ADDR1, A.MEM_ADDR2, A.MEM_MAIL, 
+        		(SELECT DEPT_NM FROM DEPARTMENT C WHERE D.DEPT_NO=C.DEPT_NO) AS CH_DEPT_NM,
+        		(SELECT POSI_NM FROM POSITION B WHERE D.POSI_NO=B.POSI_NO) AS CH_POSI_NM,
+       			 D.CHANGE_DATE
+		  FROM MEMBER A, POSITION B, DEPARTMENT C, MEMBER_INFO D
+	 	 WHERE A.POSI_NO = B.POSI_NO
+		   AND A.DEPT_NO = C.DEPT_NO
+		   AND A.MEM_NO = D.MEM_NO
+		   AND A.MEM_NO = #mem_no#
+		 ORDER BY 1 DESC
+	</select>
+	
+	<select id="deptMemberInfo" parameterClass="int" resultClass="memberVO">
+		SELECT A.MEM_NO, A.MEM_NM, A.MEM_TEL, B.POSI_NM, C.DEPT_NM, A.MEM_BIRTH, A.MEM_ADDR1, A.MEM_ADDR2, A.MEM_MAIL
+  		FROM MEMBER A, POSITION B, DEPARTMENT C
+		WHERE A.POSI_NO = B.POSI_NO
+		AND A.DEPT_NO = C.DEPT_NO
+		AND A.MEM_NO = #mem_no#
+	</select>
+	
+<!-- 	급여내역조회 -->
+	<select id="getSalary" parameterClass="int" resultClass="salaryVO">
+		SELECT SALARY_NO, SALARY_NM, SALARY, PAYDAY 
+		FROM SALARY
+		WHERE MEM_NO = #mem_no#
+		ORDER BY 1 DESC
+	</select>
+	
+<!-- 	급여지급 -->
+	<insert id="insertSalary" parameterClass="salaryVO">
+		INSERT INTO SALARY (SALARY_NO,MEM_NO,SALARY,SALARY_NM,PAYDAY) 
+			VALUES (SEQ_SALARY.NEXTVAL,#mem_no#,#salary#,#salary_nm#,SYSDATE)
+	</insert>	
+	
+	
+</sqlMap>
+
+
+
+
+

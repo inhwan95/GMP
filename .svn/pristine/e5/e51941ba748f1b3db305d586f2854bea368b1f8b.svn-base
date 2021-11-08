@@ -1,0 +1,163 @@
+<%@page import="ddit.vo.SanctionDocumentVO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../css/custom.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<title>전자 결재</title>
+<script src="../js/jquery-3.6.0.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+<%
+	SanctionDocumentVO document = (SanctionDocumentVO)request.getAttribute("document");
+%>	
+	
+<select id="documentSelect">
+	<option value="">휴가신청서</option>
+	<option value="">회의보고서</option>
+	<option value="">주간업무보고서</option>
+	<option value="">지출결의서</option>
+	<option value="">기안서</option>
+	<option value="">품의서</option>
+	<option value="">사직서</option>
+</select>
+	
+<input type="button" id="writeBtn" value="작성"/>
+
+<script type="text/javascript">
+
+function documentList() {
+	
+	$.ajax({
+		url : <%=request.getContextPath()%>/sanction/sanctionDocument.do,
+		type : 'post',
+		data : {
+			"documentSelect" : "휴가신청서"
+		},
+		dataType : "json",
+		success : function (res) {
+			
+			let str = "";
+			str += "<ol>";
+			$.each(res, function (i,v) {
+				str += "<li>";
+				str += "결재번호 : " + v.san_no;
+				str += "<br>";
+				str += "결재구분명 : " + v.san_nm;
+				str += "<br>";
+				str += "작성일 : " + v.san_write_date;
+				str += "<br>";
+				str += "결재승인일 : " + v.san_conf_date;
+				str += "<br>";
+				str += "내용 : " + v.san_content;
+				str += "<br>";
+				str += "결재기한 : " + v.san_deadline;
+				str += "<br>";
+				str += "결재상태 : " + v.san_status;
+				str += "<br><br>";
+				str += "</li>";
+			});
+			str += "</ol>";
+		},
+		error : function (xhr) {
+			console.log(xhr);
+		}
+	});
+	
+}
+
+function documentInsert() {
+	
+		let str = "";
+		str += "<select name='san_nm' id='san_nm'>";
+		str += "	<option value='휴가신청서'>휴가신청서</option>";
+		str += "	<option value='회의보고서'>회의보고서</option>";
+		str += "	<option value='주간업무보고서'>주간업무보고서</option>";
+		str += "	<option value='지출결의서'>지출결의서</option>";
+		str += "	<option value='기안서'>기안서</option>";
+		str += "	<option value='품의서'>품의서</option>";
+		str += "	<option value='사직서'>사직서</option>";
+		str += "</select>";
+		str += "<input type='text' placeholder='결재구분명' id='san_nm' name='san_nm' maxlength='30'>";
+		str += "<input type='text' placeholder='내용' id='san_content' name='san_content' maxlength='2000'>";
+		
+	
+	$('#writeBtn').on("click",function(){
+		let san_nm = $('#san_nm').val();
+		let san_content = $('#san_content').val();
+		
+		$.ajax({
+			url : '<%=request.getContextPath()%>/sanction/sanctionDocument.do',
+			type : 'post',
+			data : {
+				"san_nm" : san_nm,
+				"san_content" : san_content
+			},
+			success : function (res) {
+				documentList();
+			},
+			dataType : "json",
+			error : function (xhr) {
+				console.log(xhr);
+			}
+		});
+		
+	});
+	
+}
+</script>
+
+
+<%-- 
+<form id="documentForm">
+	<table class="table table-bordered table-hover" style="text-align: center; border: 1px solid #dddddd">
+		<thead>
+			<tr>
+				<th colspan="3"><h3>결재 서류</h3></th>
+			</tr>
+		</thead>
+		<tr>
+			<td>결재번호</td>
+			<td><%=document.getSan_no() %></td>
+		</tr>
+		<tr>
+			<td>결재구분명</td>
+			<td><%=document.getSen_nm() %></td>
+		</tr>
+		<tr>
+			<td>작성일</td>
+			<td><%=document.getSan_write_date() %></td>
+		</tr>
+		<tr>
+			<td>결재승인일</td>
+			<td><%=document.getSan_conf_date() %></td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td><%=document.getSan_content() %></td>
+		</tr>
+		<tr>
+			<td>결재기한</td>
+			<td><%=document.getSan_deadline() %></td>
+		</tr>
+		<tr>
+			<td>결재상태</td>
+			<td><%=document.getSan_status() %></td>
+		</tr>
+	</table>
+</form>
+ --%>
+	
+	
+</body>
+</html>

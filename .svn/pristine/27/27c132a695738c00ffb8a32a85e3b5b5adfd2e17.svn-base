@@ -1,0 +1,479 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- <link rel="stylesheet" href="https://unpkg.com/mvp.css"> -->
+<title>Na's Company</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+<link href="<%=request.getContextPath() %>/css/mainPage.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<%=request.getContextPath() %>/css/fonts.css" rel="stylesheet" type="text/css" media="all" />
+
+<script src="<%=request.getContextPath() %>/js/jquery-3.6.0.min.js"></script>
+<style>
+ .inputBtn
+   {
+      display: inline-block;
+      padding: 1em 3em 1em 2em;
+      letter-spacing: 0.20em;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 400;
+      font-size: 0.90em;
+      color: #272925;
+   }
+   
+   .inputBtn:before
+   {
+      display: inline-block;
+      background: #FFC31F;
+/*       margin-right: 1em; */
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 20px;
+      text-align: center;
+      color: #FFF;
+   }
+   #connectOff{
+      display: none;
+   }
+#chatBtn{
+	cursor: pointer;
+}
+.fc-event{
+		margin-top: 5px;
+		cursor: move;
+	}
+#nodeURL{
+	width: 100%;
+	height: 300px;
+}
+#chatArea {
+		display: none;	
+/* 		border:2px solid blue; */
+		padding: 5px;   width : 430px;
+		margin: 0px auto;
+}
+#connectArea {
+/* 		border:2px solid green;	 */
+		padding: 5px; 
+		width : 430px;
+		margin: 0px auto;
+}
+#messageTextArea{
+  width: 700px;
+  height: 300px;
+  text-align: left;
+  border: 3px solid black; 
+}
+#chatRoomList, #chatRoomMemList{
+	width: 200px;
+	height: 200px;
+}
+.messageTextArea::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+}
+.right{
+	text-align: right;
+}
+.left{
+	text-align: left;
+}
+</style>
+
+</head>
+<%
+HttpSession getsession = request.getSession();
+String mem_id = (String) getsession.getAttribute("id");
+int mem_no = (int)getsession.getAttribute("memNo");
+int dept_no = (int)getsession.getAttribute("dept");
+String mem_nm ="";
+%>
+
+<div id="page" class="container">
+	<div id="header">
+		<div id="logo">
+			<img src="<%=request.getContextPath() %>/images/lee.JPG" alt="" />
+			<h1><a href="#">Na's Company</a></h1>
+			<span>I can do it! <a href="http://templated.co" rel="nofollow">You Can do it!</a></span>
+		</div>
+		<div id="menu">
+			<ul>
+				<li ><a href="#" accesskey="1" title="">Main Page</a></li>
+				<li ><a href="#" accesskey="2" title="">임직원 소개</a></li>
+				<li class="current_page_item"  id="chatBtn"><a title="">채팅</a></li>
+				<li><a href="#" accesskey="4" title="">Calendar</a></li>
+				<li><a href="#" accesskey="5" title="">전자결재</a></li>
+				<li><a href="#" accesskey="5" title="">관리자 페이지</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="main">
+						    <div class="inputBtn" id="messageTextArea" style="overflow: hidden;" >
+						    	<ul >
+												<li id="textdiv">
+<!-- 													<div id="sender"> -->
+												
+<!-- 													</div> -->
+<!-- 													<div id="message"> -->
+													
+<!-- 													</div>	 -->
+												</li>
+						    	</ul>
+						    </div>
+						     
+		<div id="banner">
+						<div style="vertical-align: top;">
+							<div id="chatArea">
+						    <br><br>
+<!-- 						    <textarea class="inputBtn" id="messageTextArea" readonly="readonly" ></textarea><br><br> -->
+						    <input class="inputBtn"  type="text" id="messageText" size="40">
+						    <input class="inputBtn"  id="sendBtn" type="button" value="보내기" onclick="sendMessage()">
+						    <input class="inputBtn" id="connectOff" type="button" value="접속종료" onclick="closing()" >
+			   				</div>
+						</div>
+					<div>
+						<div id="chatRoom">
+							<input class="inputBtn"  type="text" id="newRoomName">
+							<input class="inputBtn"  id="createRoom" type="button" value="채팅방만들기" onclick="createRoom()">
+							<br><br>채팅방 목록<br>
+				    		<select id="chatRoomList" size="5"></select><br>
+				    		<input class="inputBtn"  id="roomin" type="button" value="채팅방 입장" onclick="chatRoomIn()"><br><br>
+				    		<span id="chatRoomName">전체</span> 채팅방 멤버 목록<br>
+				    		<select id="chatRoomMemList" size="5"></select><br>
+				    		<input class="inputBtn"  type="button" value="채팅방 나가기" onclick="chatRoomOut()">
+			  			</div>
+	    <br>
+		<input class="inputBtn"  type="button" id="chatBtn" value="페이스톡" onclick="popup();">
+	    <br><br><br><br><br><br><br><br><br>
+	
+		</div>
+		</div>
+		
+		<div id="welcome">
+			<div class="title">
+		</div>
+		<div id="featured">
+			<div class="title">
+				<h2>공지사항</h2>
+				<span class="byline"> </span>
+			</div>
+			<ul class="style1">
+				<li class="first">
+					<p class="date"><a href="#">sept<b>05</b></a></p>
+					<h3>11/24 창립기념일 관련 행사 안내</h3>
+					<p><a href="#">11/24일 창립기념일 기념품 배포 안내드립니다.</a></p>
+				</li>
+				<li>
+					<p class="date"><a href="#">sept<b>17</b></a></p>
+					<h3>부서별 워크숍 일정 안내</h3>
+					<p><a href="#">관리부-9/27, </a></p>
+				</li>
+				<li>
+					<p class="date" ><a href="#">Jan<b>01</b></a></p>
+					<h3>Amet sed volutpat mauris</h3>
+					<p><a href="#">Consectetuer adipiscing elit. Nam pede erat, porta eu, lobortis eget, tempus et, tellus. Etiam neque. Vivamus consequat lorem at nisl. Nullam non wisi a sem semper eleifend. Etiam non felis. Donec ut ante.</a></p>
+				</li>
+				<li>
+					<p class="date"><a href="#">Dec<b>31</b></a></p>
+					<h3>Sagittis diam dolor amet</h3>
+					<p><a href="#">Etiam non felis. Donec ut ante. In id eros. Suspendisse lacus turpis, cursus egestas at sem. Mauris quam enim, molestie. Donec leo, vivamus fermentum nibh in augue praesent congue rutrum.</a></p>
+				</li>
+			</ul>
+		</div>
+		<div id="copyright">
+			<p> Na's Company 대표: 이나영 | CS center : 1588-2775</p>
+			<span>&copy; 대전광역시 중구 중앙로 76 영민빌딩 4층 | Fax : 042-5555-3221</span>
+			<span>&copy;DESIGN BY <a href="http://templated.co" rel="nofollow">Yuri Seo</a>.</span>
+		</div>
+	</div>
+</div>
+				
+<div id="connectArea">
+	    	<!-- 접속자 입력 텍스트박스 -->
+		    사용자ID : <input type="text" id="userId" size="20"  >
+		    <!-- 접속 버튼 -->
+		    <input class="inputBtn" id="connectBtn" type="button" value="접속하기" onclick="connectting()">
+    </div>				
+</div>
+
+<script >
+	$('#mainPage').on('click', function(){
+			
+	});
+
+	var mem_nm = "";
+
+	$.ajax({
+		url : 'searchMemberController.do',
+		data : {
+			"mem_id" : <%=mem_id%>,
+			"mem_no" : <%=mem_no%>
+		},
+		type: 'post',
+		success:function(res){
+			console.log(res);
+			mem_nm = res.mem_nm;
+		},
+		error:function(){},
+		dataType:'json'
+	});
+	
+	$.ajax({
+		url : 'groupChat.do',
+		data : {
+			"mem_nm" : mem_nm
+		},
+		type : 'post',
+		success : function(){},
+		error : function(){},
+		dataTyep: 'json'
+	});
+	
+		function popup(){
+		let url = "https://great-dog-88.loca.lt";
+		let name ="GMP ";
+		let option = "width = 1100, height = 650, location=no";
+		window.open(url, name, option);
+		};
+		
+		setTimeout(() => {
+		$('#connectBtn').click();
+		}, 500);
+		
+		$('#messageText').keypress(function(event){
+		     if ( event.which == 13 ) {
+		         $('#sendBtn').click();
+		         return false;
+		     }
+		});
+		
+		$('#newRoomName').keypress(function(event){
+		     if ( event.which == 13 ) {
+		         $('#createRoom').click();
+		         return false;
+		     }
+		});
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		var webSocket = null; // 웹소켓 변수 선언
+		
+        var messageTextArea = document.getElementById("messageTextArea");
+    	var messageText = document.getElementById("messageText");
+    	var userText = document.getElementById("userId");
+    	
+    	 function connectting(){
+    		
+    		userText.value = mem_nm;
+    		
+    		 if(userText.value.trim()==""){
+    			alert("접속자 ID를 입력하세요");
+    			userText.focus();
+    			return;
+    		} 
+				//웹소켓 초기화
+				webSocket = new WebSocket("ws://192.168.0.16:8100/GMP/websocktGroupMultiChat.do");
+	        
+				// 처음 접속 성공하면 
+				webSocket.onopen = function onOpen(event){
+					document.getElementById("connectArea").style.display = "none";
+					document.getElementById("chatRoom").style.display = "block";
+					document.getElementById("chatArea").style.display = "block";
+					// webSocket.send(userText.value);
+					webSocket.send( createMessage("connect", "전체", userText.value) );
+					
+				}
+	        
+				//메시지가 오면 messageTextArea요소에 메시지를 추가한다.
+				webSocket.onmessage = function processMessge(message){
+				
+					//Json 풀기
+					var jsonData = JSON.parse(message.data);
+					if(jsonData.message != null) {
+						 //console.log(jsonData);
+						// console.log(mem_nm);
+						// console.log(jsonData.message);
+						
+					//채팅방
+			    	const li = document.getElementById("textdiv");
+			    	const inputBtn = document.getElementById("inputBtn");
+	                const messageTextArea = $('#messageTextArea');
+ 	               // const sd = document.getElementById("sender");
+	               // const md = document.getElementById("message");
+	            	
+	                const sd = document.createElement("div");
+	                const md = document.createElement("div");
+	                
+   					// 이름
+					let name = jsonData.message.substring(0,3);
+   					// 내용
+					let contents = jsonData.message.substring(5).trim();						
+					
+   					console.log(name);
+					console.log(contents);
+					
+					//css
+					//chatdiv.style.textAlign="left";	
+					//chatdiv.style.backgroundColor="#90EE90";
+						 //chatdiv.style.borderColor="#696969";
+						 //chatspan.style.textAlign="left"; 
+						 //chatil.style.textAlign="left"; 
+						 
+						 md.style.display="inline-block";
+						 md.style.wordBreak="break-all";
+						 md.style.margin="5px 20px";
+						 md.style.border="1px solid #888";
+						 md.style.padding="10px";
+						 md.style.borderRadius="9px";
+						 md.style.backgroundColor="#FCFCFC";
+						 md.style.Color="#555";
+						 
+						 //sd.style.display="inline-block";
+						 sd.style.margin="10px 20px 0 20px"; 
+						 sd.style.fontWeight="bold"; 
+						 
+						 if( mem_nm === jsonData.message.substring(0,4).trim()){
+							 //$('#startli').addClass("right");	 
+							 sd.style.textAlign="right"; 
+							 md.style.textAlign="right"; 
+							 //md.style.float="right"; 
+							// chatspan.style.textAlign="right";
+							 //chatcontents.style.textAlign="right";
+							 //ul.style.textAlign="right";
+						 }else if( '알리미' === jsonData.message.substring(0,3) ){	 
+							 sd.style.textAlign="center"; 
+							 md.style.textAlign="center"; 
+						 	//chatspan.innerText = "";
+						 	//chatcontents.innerText = "";
+						 	//chatcontents.style.border="";
+						 }else if(mem_nm !== jsonData.message.substring(0,4).trim()){
+							 sd.style.textAlign="left";
+							 md.style.textAlign="left";
+							 //md.style.float="left"; 
+							 //chatspan.style.textAlign="left";
+							 //chatcontents.style.textAlign="left";
+							 //ul.style.textAlign="left";
+							//ul.style.textAlign="center";
+						 }
+						// ul.appendChild(li);
+						// sender.appendChild(chatspan);
+						 //chatmessage.appendChild(chatcontents);	
+		       			 //chatdiv.innerText += jsonData.message + "\n"
+						 sd.innerText += name + "\n";
+						 md.innerText += contents  + "\n";
+						 
+						 li.appendChild(sd);
+			             li.appendChild(md);
+			             
+						 messageTextArea.scrollTop(messageTextArea[0].scrollHeight);
+						 //messageTextArea.value += jsonData.message + "\n"
+						 //messageTextArea.scrollTop = 9999999;
+
+					};
+						
+					// 채팅방 목록 출력하기
+					if(jsonData.roomList != null){
+						var jsonRoomList = JSON.parse(jsonData.roomList);
+						var selElement = document.getElementById("chatRoomList");
+						var strHtml = "";
+						for(var i=0; i<jsonRoomList.length; i++){
+							strHtml += "<option value='" + jsonRoomList[i] + "'>" + jsonRoomList[i] + "</option>";
+						}
+						selElement.innerHTML = strHtml;
+					}
+					
+					if(jsonData.roomName != null){
+						document.getElementById("chatRoomName").innerHTML = jsonData.roomName;
+					}
+	            
+					// 채팅방 멤버 목록 출력하기
+					if(jsonData.roomMemList != null){
+						var jsonRoomMemList = JSON.parse(jsonData.roomMemList);
+						var selElement = document.getElementById("chatRoomMemList");
+						var strHtml = "";
+						for(var i=0; i<jsonRoomMemList.length; i++){
+							strHtml += "<option value='" + jsonRoomMemList[i] + "'>" + jsonRoomMemList[i] + "</option>";
+						}
+						selElement.innerHTML = strHtml;
+					}
+				}
+	        
+				webSocket.onerror = function showErrorMsg(event) {
+					alert("오류 : " + event.data);
+				}
+			
+				webSocket.onclose = function(event){
+					messageTextArea.value = "";
+					messageText.value = "";
+					userText.value = "";
+					document.getElementById("connectArea").style.display = "block";
+					document.getElementById("chatRoom").style.display = "none";
+					document.getElementById("chatArea").style.display = "none";
+				}
+    	}
+    
+    	// 메시지 구조  {"command" : "명령종류", "room" : "채팅방이름", "message" : "메시지" }
+    	// 명령 종류 : "create" - 채팅방 만들기, "change" - 채팅방 이동, "message" - 메시지 전송, "connect" - 처음 접속 
+    	
+    	
+			//메시지 보내기
+			function sendMessage(){
+				if(messageText.value.trim()==""){
+					messageText.focus();
+					return;
+				}
+				var room = document.getElementById("chatRoomName").innerHTML.trim();
+				
+				//webSocket.send('{"room" : "' + "전체" + '", "message" : "' + messageText.value + '"}' );
+				webSocket.send( createMessage("message", room, messageText.value) );
+				messageText.value = ""; 
+			}
+    	
+    	// 채팅방 만들기
+    	function createRoom(){
+    		var newRoom = document.getElementById("newRoomName");
+    		if(newRoom.value==""){
+    			alert("생성할 채팅방을 입력한 후 사용하세요.")
+    			newRoom.focus();
+    			return;
+    		}
+    		webSocket.send( createMessage("create", newRoom.value, null) );
+    		newRoom.value = ""; 
+    	}
+    	
+    	// 채팅방 이동
+    	function chatRoomIn(){
+    		var selectRoom = document.getElementById("chatRoomList")
+    		if(selectRoom.selectedIndex==-1 || selectRoom.value==""){
+    			alert("이동할 채팅방을 선택한 후 사용하세요.");
+    			return;
+    		}
+    		webSocket.send( createMessage("change", selectRoom.value, null) );
+    	}
+    	
+    	// 채팅방 나가기  ==> 즉, '전체' 채팅방으로 이동
+    	function chatRoomOut(){
+    		webSocket.send( createMessage("change", "전체", null) );
+    	}
+    	
+    	// 전송할 메시지를 작성하는 함수
+    	function createMessage(command, room, message){
+    		return '{"command" : "' + command + '", "room" : "' + room + '", "message" : "' + message + '"}'
+    	}
+        
+			function closing(){
+				webSocket.close();
+			}
+			
+			window.onbeforeunload = function(){
+				closing();
+			}
+</script>
+</body>
+</html>

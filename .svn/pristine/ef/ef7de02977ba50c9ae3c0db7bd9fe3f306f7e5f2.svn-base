@@ -1,0 +1,442 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/bootstrap.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@200&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/board.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/calendarmain.css">
+
+<script src="<%=request.getContextPath() %>/js/moment.js"></script>
+<script src='<%=request.getContextPath() %>/js/calendermain.js'></script>
+<script src="<%=request.getContextPath() %>/js/ko.js"></script>
+
+<script src="<%=request.getContextPath() %>/js/jquery-3.6.0.min.js"></script>
+<script src="<%=request.getContextPath() %>/js/bootstrap.min.js"></script>
+<%-- <script type="text/javascript" src="<%=request.getContextPath() %>/js/conference.js"></script> --%>
+<title>Na's Calendar</title>
+<style>
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+	height: 550px
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+	background-color: #f1f1f1;
+	height: 100%;
+}
+
+/* On small screens, set height to 'auto' for the grid */
+@media screen and (max-width: 767px) {
+	.row.content {
+		height: auto;
+	}
+}
+
+#divsel {
+	background-color: rgb(255 255 255/ 53%);
+	position: relative;
+}
+
+#divsel::before {
+	background-image: url(../images/company.JPG);
+	content: '';
+	opacity: 0.5;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+#containerdiv {
+	
+}
+.fc-event{
+		margin-top: 5px;
+		cursor: move;
+	}
+</style>
+</head>
+<body>
+<%
+	int mem_no = Integer.parseInt( request.getParameter("mem_no") );
+	System.out.println("calendarPage.jsp에서의 mem_no"+mem_no);
+	int dept_no= Integer.parseInt( request.getParameter("dept_no") );
+	System.out.println("calendarPage.jsp에서의 dept_no"+dept_no);
+%>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"></a>
+				<div id="navbar-brand">
+					<img src="<%=request.getContextPath() %>/images/logo.JPG" width="15%" height="5%"><br>
+				</div>
+			</div>
+			<form action="Login.jsp">
+				<div class="collapse navbar-collapse" id="myNavbar">
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+					</ul>
+				</div>
+			</form>
+		</div>
+	</nav>
+
+
+
+	<div id="containerdiv" class="container-fluid">
+		<div class="row content">
+			<div id="divsel">
+				<!-- style="background-color: rgb(255 255 255 / 53%)" -->
+				<div class="col-sm-3 sidenav hidden-xs" style="width:500px;">
+					<h2>Menu</h2>
+					<ul class="nav nav-pills nav-stacked">
+						<li class="active"><a href="#section1">Main Page</a></li>
+						</ul>
+						<ul class="nav nav-pills nav-stacked">
+						<li id="company"><a href="#section2">회사정보</a></li>
+						</ul>
+						<ul class="nav nav-pills nav-stacked">
+						<li><a href="#section3">근태관리</a></li>
+						</ul>
+						<ul class="nav nav-pills nav-stacked">
+						<li><a href="#section3">채팅</a></li>
+						</ul>
+						<ul class="nav nav-pills nav-stacked">
+						<li id="calendarBtn"><a>Calendar</a></li>
+						</ul>
+						<ul class="nav nav-pills nav-stacked">
+						<li><a href="#section3">전자결재</a></li>
+						<li id="conference"><a>회의실</a></li>
+						<li id="notiBtn"><a>공지사항</a></li>
+						<li id="freeBtn"><a>자유게시판</a></li>
+						<li><a href="#section3">관리자 페이지</a></li>
+					</ul>
+					<br>
+				</div>
+				<br>
+
+				<article>
+					<div class="col-sm-9">
+						<div class="well">
+							<h4>Na's Company</h4>
+							<p>Company Introduction</p>
+						</div>
+					</div>
+				</article>
+				
+				<div class="col-lg-12">
+				
+					<div id='external-events' style="float: left; width: 15%; padding-right: 30px; padding-left:20px " >
+		
+		<div style="width: 10%; float: right; text-align: right; margin-right: 73px;">
+			<button style="width: 100px; height: 40px; color: white; vertical-align: middle; font-size: 17px; cursor: pointer; "
+			 class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' onclick="javascript:allSave();">저장 하기</button>
+		</div>
+		<p> 
+			<strong>드래그 이벤트</strong>
+		</p>
+
+		<div	class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			<div class='fc-event-main'>등산</div>
+		</div>
+		<div	class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			<div class='fc-event-main'>회식</div>
+		</div>
+		<div	class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			<div class='fc-event-main'>워크샾</div>
+		</div>
+		<div	class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+			<div class='fc-event-main'>송년회</div>
+		</div>
+		
+		<div	class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' >
+			<div class='fc-event-main'>체육대회</div>
+		</div>
+		
+		<p>
+			<input type='checkbox' id='drop-remove' /> <label for='drop-remove'>드래그 앤 드롭 후 제거</label>
+		</p>
+	</div>
+
+	
+	<div id='calendar-container' style="float: right;  width: 80%" >
+
+		<div id='calendar'></div>
+	</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<footer class="container-fluid text-center">
+		<p>회사: 대전광역시 중구 대흥동 / 대표 : 이나영</p>
+		<p>고객센터 : 1588-1159 / mail : abcd@naver.com</p>
+		<p>사업자번호 : 314-86-24510</p>
+	</footer>
+	
+	<!-- 주원 -->
+	<script type="text/javascript">
+		//function calendar(){
+			// getSave() 메소드사용을 위해 전역변수로 선언
+			var calendar = null;
+			var title = "";
+			var start ="";
+			var end ="";
+			var allDay ="";
+			var id = "";
+			var mem_no = <%=mem_no%>;
+			var dept_no = <%=dept_no%>;
+			console.log(mem_no);
+			console.log(dept_no);
+			
+			document.addEventListener('DOMContentLoaded', function() {
+			  var Calendar = FullCalendar.Calendar;
+			  var Draggable = FullCalendar.Draggable;
+
+			  var containerEl = document.getElementById('external-events');
+			  var calendarEl = document.getElementById('calendar');
+			  var checkbox = document.getElementById('drop-remove');
+
+			  // initialize the external events
+			  // -----------------------------------------------------------------
+			  var all_events = null;
+			  
+			  all_events = loadingEvents();
+			  //console.log("ev: " + all_events);
+			  new Draggable(containerEl, {
+				  // .fc-event들을 item으로 지정함
+			    itemSelector: '.fc-event',
+			    eventData: function(eventEl) {
+			      return {
+			        title: eventEl.innerText
+			      };
+			    }
+			  });
+
+			  // initialize the calendar
+			  // -----------------------------------------------------------------
+
+			  	calendar = new Calendar(calendarEl, {
+			    headerToolbar: {
+			      left: 'prev,next today',
+			      center: 'title',
+			      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+			    },
+			    locale : 'ko',	 	// 한글로 지정
+			    editable: true,	// 수정 가능 여부 true, false일시에 드래그이벤트 수정 불가(옮기기)
+			    droppable: true, // this allows things to be dropped onto the calendar
+			    events : all_events, // json 변수를 써야한다(json형태의)
+			    //체크박스가 ture일때 해당 객체를 제거한다.
+			    drop: function(info) {
+			      // is the "remove after drop" checkbox checked?
+			      if (checkbox.checked) {
+			        // if so, remove the element from the "Draggable Events" list
+			        info.draggedEl.parentNode.removeChild(info.draggedEl);
+			      }
+			    }
+			  }); 
+
+			  calendar.render();
+			});
+
+			function calendarView(all_events){
+				var Calendar = FullCalendar.Calendar;
+				  var Draggable = FullCalendar.Draggable;
+
+				  var containerEl = document.getElementById('external-events');
+				  var calendarEl = document.getElementById('calendar');
+				  var checkbox = document.getElementById('drop-remove');
+				  
+				  calendar = new Calendar(calendarEl, {
+					    headerToolbar: {
+					      left: 'prev,next today',
+					      center: 'title',
+					      right: 'dayGridMonth,timeGridWeek,timeGridDay',
+					    },
+					    weekNumbers : true,
+					    weekNumberCalculation : 0,
+					    locale : 'ko',	 	// 한글로 지정
+						weekNumbers : false,
+					    editable: true,	// 수정 가능 여부 true, false일시에 드래그이벤트 수정 불가(옮기기)
+					    droppable: true, // this allows things to be dropped onto the calendar
+					    events : all_events, // json 변수를 써야한다(json형태의)
+					    eventClick : function(info){
+					    	if(!confirm("일정 "+info.event.title+"을 삭제하시겠습니까?")){
+					    		return false;
+					    	};
+			/* 		    	if(!confirm("일정 "+info.event.title+info.event.id+info.event.start+info.event.end+info.event.allDay+"을 삭제하시겠습니까?")){
+					    		console.log(info.event.title);
+					    		return false;
+					    	}; */
+					    	removeEvent(info);
+					    	info.event.remove(); //화면상에서만 제거
+					    	//window.location.reload();
+					    },
+					    //체크박스가 ture일때 해당 객체를 제거한다.
+					    drop: function(info) {
+					      // is the "remove after drop" checkbox checked?
+					      if (checkbox.checked) {
+					        // if so, remove the element from the "Draggable Events" list
+					        info.draggedEl.parentNode.removeChild(info.draggedEl);
+					      }
+					    }
+					  });
+
+					  calendar.render();
+			}
+
+
+
+			// 1. 전체 이벤트 데이터를 추출해야 한다. 
+			// 2. ajax로 서버에 전송하여 DB에 저장해야 한다.
+
+			function allSave(){
+					//  calender.getEvents() -> Array
+					var allEvent = calendar.getEvents();
+					console.log(allEvent);
+					
+					//allEvent._def.extendedProps.appendChild(mem_no);
+					//allEvent._def.extendedProps.appendChild(dept_no);
+					
+					var addevents = new Array();
+					//var m = moment();
+					// var str = "";
+					// allDay 값, title값, instance->range->end, start값필요
+					for( var i = 0; i < allEvent.length; i++ ){
+						id = allEvent[ allEvent.length -1 ]._def.defId;
+						title = allEvent[allEvent.length -1 ]._def.title;
+						allDay = allEvent[allEvent.length -1 ]._def.allDay;
+						start = allEvent[allEvent.length -1 ]._instance.range.start;
+						end = allEvent[allEvent.length -1 ]._instance.range.end; 
+						idx = allEvent[allEvent.length -1]._def.extendedProps.idx;
+						//mem_no = allEvent[allEvent.length -1]._def.extendedProps.mem_no;
+						//dept_no = allEvent[allEvent.length -1]._def.extendedProps.dept_no;
+						
+						//end = moment(end).format('YYYY/MM/DD hh:mm');
+						//console.log( start );
+						//console.log( end );
+						//console.log("s:" + start);
+						//console.log("E:"+end);
+						//tochar
+						start = moment(start).format('YYYY-MM-DD HH:mm:ss');
+						end = moment(end).format('YYYY-MM-DD HH:mm:ss');
+						console.log(title);
+						console.log(allDay);
+						console.log(start);
+						console.log(end);
+						console.log(idx);
+						
+						addevents.push(title);
+						addevents.push(allDay);
+						addevents.push(start);
+						addevents.push(end);
+						addevents.push(idx);
+						//addevents.push(mem_no);
+						//addevents.push(dept_no);
+						
+					savedata(addevents);
+					return false;
+					}
+					//window.location.reload();
+
+			}; // allSave()
+
+			  function removeEvent(info){
+				 /* var infoStart = info.event.start;
+				 infoStart = moment(infoStart).format('YYYY-MM-DD hh:mm:ss');
+				 var infoEnd = info.event.end;
+				 infoEnd = moment(infoEnd).format('YYYY-MM-DD hh:mm:ss'); */
+				 var idx = info.event._def.extendedProps.idx;
+				 
+				$.ajax({
+					url: '<%=request.getContextPath()%>/deleteCalendarTest.do',
+					type : 'post',
+					data : {
+						"idx" : idx,
+						/* "id" : info.event.id,
+						"title" : info.event.title, 
+						"allDay" : info.event.allDay,
+						"start" : infoStart,
+						"end" : infoEnd */
+					},
+					//async:false,
+					success:function(res){
+						 alert("일정이 정상적으로 삭제되었습니다.");
+					},
+					error:function(){},
+					dataType: 'json'
+				});// ajax
+
+				//});// click function
+			};
+
+			  function loadingEvents(){
+				var return_value = null;
+				$.ajax({
+					url : '<%=request.getContextPath()%>/loadCalendarTest.do',
+					type : 'post',
+					data : {
+						"mem_no" : mem_no,
+						"dept_no" : dept_no
+					},
+					//async:false,
+					success : function(res){
+						return_value = res;
+						console.log(return_value);
+						calendarView(return_value);
+					},
+					error : function(){
+					},
+					dataType : 'json'
+				}); //loadingEvents()의 ajax()
+			};
+			  function savedata(jsondata){
+				  console.log(jsondata);
+				$.ajax({
+					url: '<%=request.getContextPath()%>/calendarTest.do',
+					type : 'post',
+					data : {
+						//"idx" : idx,
+						"id" : id,
+						"title" : title, 
+						"allDay" : allDay,
+						"start" : start,
+						"end" : end,
+						"mem_no" : mem_no,
+						"dept_no" : dept_no
+ 					},
+					// async:false,
+					success:function(){
+						// console.log(res);
+						// alert("일정이 정상적으로 추가되었습니다.");
+					},
+					error:function(){},
+					dataType: 'json'
+				});// ajax
+				
+			}// savedata() 
+		//} //function calendar
+		
+	</script>
+	
+</body>
+</html>

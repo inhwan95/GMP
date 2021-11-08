@@ -1,0 +1,119 @@
+package ddit.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import ddit.config.BuildedSqlMapClient;
+import ddit.vo.DepartmentVO;
+import ddit.vo.MemberInfoVO;
+import ddit.vo.MemberVO;
+import ddit.vo.SalaryVO;
+import ddit.vo.WorkManagementVO;
+
+public class ManagerDAOImpl implements IManagerDAO{
+
+	private static ManagerDAOImpl instance;
+	private SqlMapClient smc; 
+	private ManagerDAOImpl() {
+		smc = BuildedSqlMapClient.getSqlMapClient();
+	}
+	
+	public static ManagerDAOImpl getInstance() {
+		if (instance==null) instance = new ManagerDAOImpl();
+		return instance;
+	}
+	
+	@Override
+	public List<WorkManagementVO> getWorkList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int insertMemInfo(MemberInfoVO memInfoVo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateMemInfo(MemberInfoVO memberInfoVo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteMemInfo(int infoNo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<MemberInfoVO> getMemInfoList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MemberInfoVO getMemInfo(int memNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int insertSal(SalaryVO salVo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<SalaryVO> getSalaryList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SalaryVO getSalary(int memNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DepartmentVO> departmentList() {
+		List<DepartmentVO> list = null;
+				
+		try {
+			list = smc.queryForList("manager.departmentList");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<MemberVO> departmentMember() {
+		List<MemberVO> list = null;
+		
+//		try {
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+		
+		return null;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

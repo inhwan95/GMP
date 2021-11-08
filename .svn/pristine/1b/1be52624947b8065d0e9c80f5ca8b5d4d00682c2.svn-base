@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="member">
+	
+	<!-- MEMBER(직원) 테이블 데이터 생성 -->
+	<insert id="memberInsert" parameterClass="memberVO">
+	INSERT INTO MEMBER 
+    (MEM_NO,
+    MEM_NM,
+    MEM_TEL,
+    MEM_ADDR1,
+    MEM_ADDR2,
+    MEM_BIRTH,
+    MEM_ID,
+    MEM_PW,
+    MEM_MAIL,
+    HIRE,
+    RETIRE,
+    DEPT_NO,
+    POSI_NO,
+    AUTH,
+    MEM_KKO) 
+			VALUES 
+            (SEQ_MEMBER.NEXTVAL,
+            #mem_nm#,
+            #mem_tel#,
+            #mem_addr1#,
+            #mem_addr2#,
+            #mem_birth#,
+            #mem_id#,
+            #mem_pw#,
+            #mem_mail#,
+            SYSDATE,
+            SYSDATE,
+            0,
+            0,
+            0,
+            #mem_kko#)
+	</insert>
+	
+	<!-- MEMBER(직원) 테이블 데이터 수정 -->
+	<update id="memberUpdate" parameterClass="memberVO">
+		UPDATE MEMBER 
+		   SET MEM_TEL=#mem_tel# ,
+			   MEM_ADDR1=#mem_addr1# ,
+			   MEM_ADDR2=#mem_addr2# ,
+			   MEM_MAIL=#mem_mail# 
+		WHERE MEM_NO=#mem_no#
+	</update>
+	
+	<!-- MEMBER(직원) 테이블 전체 데이터 조회 -->
+	<select id="getMemberList" resultClass="memberVO">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<!-- MEMBER(직원) 테이블 데이터 삭제 -->
+	<delete id="memberDelete" parameterClass="String">
+		DELETE FROM MEMBER 
+		WHERE MEM_ID=#mem_id#
+	</delete>
+	
+	<select id="login" resultClass="memberVO" parameterClass="memberVO">
+		SELECT * FROM MEMBER WHERE MEM_ID=#mem_id# AND MEM_PW=#mem_pw#
+	</select>
+	
+	<select id="getMemberInfo" parameterClass="memberVO" resultClass="memberVO">
+		SELECT * FROM MEMBER where MEM_ID=#mem_id# AND MEM_NO=#mem_no#
+	</select>
+	
+	<select id="getMemberOne" parameterClass="memberVO" resultClass="memberVO">
+		SELECT * FROM MEMBER where MEM_NO=#mem_no#
+	</select>
+
+	<select id="searchKkoLogin" resultClass="memberVO" parameterClass="memberVO">
+		SELECT * FROM MEMBER WHERE MEM_KKO=#mem_kko#
+	</select>
+
+	<select id="idCheck" resultClass="int" parameterClass="String">
+		SELECT COUNT(*) FROM MEMBER WHERE MEM_ID = #mem_id#
+	</select>
+
+</sqlMap>

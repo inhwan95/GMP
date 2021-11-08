@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="sanction_file">
+
+	<!-- SANCTION_FILE(결재파일) 테이블 데이터 생성 -->
+	<insert id="sanctionFileInsert" parameterClass="sanction_fileVO">
+		INSERT INTO SANCTION_FILE (FILE_NO,SAN_NO,SAN_FILE_NM,FILE_PATH) 
+			VALUES (SEQ_SANCTION_FILE.NEXTVAL,#san_no#,#san_file_nm#,#file_path#)
+	</insert>
+	
+	<!-- SANCTION_FILE(결재파일) 테이블 데이터 수정 -->
+	<update id="sanctionFileUpdate" parameterClass="sanction_fileVO">
+		UPDATE SANCTION_FILE 
+			SET SAN_FILE_NM=#san_file_nm# ,
+				FILE_PATH=#file_path#
+		WHERE FILE_NO=#file_no#
+	</update>
+	
+	<!-- SANCTION_FILE(결재파일) 테이블 전체 데이터 조회 -->
+	<select id="getSanctionFileList" resultClass="sanction_fileVO">
+		SELECT * FROM SANCTION_FILE
+	</select>
+	
+	<!-- SANCTION_FILE(결재파일) 테이블 데이터 삭제 -->
+	<delete id="sanctionFileDelete" parameterClass="int">
+		DELETE FROM SANCTION_FILE 
+		WHERE FILE_NO=#FILE_NO#
+	</delete>
+	
+
+
+
+
+
+
+
+</sqlMap>

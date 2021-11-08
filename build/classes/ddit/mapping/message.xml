@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="message">
+
+	<!-- MESSAGE(메시지) 테이블 데이터 생성 -->
+	<insert id="messageInsert" parameterClass="messageVO">
+		INSERT INTO MESSAGE (MES_IDX,CHAT_NO,MEM_NO,CHAT_CONTENT,CHAT_TIME) 
+			VALUES (SEQ_MESSAGE.NEXTVAL,#chat_no#,#mem_no#,#chat_content#,SYSDATE)
+	</insert>
+	
+	<!-- MESSAGE(메시지) 테이블 데이터 수정 -->
+	<update id="messageUpdate" parameterClass="messageVO">
+		UPDATE MESSAGE 
+			SET CHAT_CONTENT=#chat_content# ,
+				CHAT_TIME=#chat_time#
+		WHERE MES_IDX=#mes_idx#
+	</update>
+	
+	<!-- MESSAGE(메시지) 테이블 전체 데이터 조회 -->
+	<select id="getMessageList" resultClass="messageVO">
+		SELECT * FROM MESSAGE
+	</select>
+	
+	<!-- MESSAGE(메시지) 테이블 데이터 삭제 -->
+	<delete id="messageDelete" parameterClass="int">
+		DELETE FROM MESSAGE 
+		WHERE MES_IDX=#MES_IDX#
+	</delete>
+	
+
+	<select id="getMemberMessageList" resultClass="messageVO" parameterClass="int">
+		select DISTINCT(MES_IDX),
+				CHAT_NO,
+				MEM_NO,
+				CHAT_CONTENT,
+				CHAT_TIME,
+				CHAT_CHANNEL
+		 from MESSAGE 
+         where mem_no=#no#
+	</select>
+
+
+
+
+
+
+</sqlMap>

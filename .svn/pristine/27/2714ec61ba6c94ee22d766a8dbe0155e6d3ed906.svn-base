@@ -1,0 +1,70 @@
+package ddit.service;
+
+import java.util.List;
+
+import ddit.dao.ManagerDAOImpl;
+import ddit.vo.MemberInfoVO;
+import ddit.vo.SalaryVO;
+import ddit.vo.WorkManagementVO;
+
+public class ManagerServiceImpl implements IManagerService{
+
+	private static ManagerServiceImpl instance;
+	private ManagerDAOImpl dao;
+	private ManagerServiceImpl() {
+		dao = ManagerDAOImpl.getInstance();
+	}
+	
+	public static ManagerServiceImpl getInstance() {
+		if (instance == null) instance = new ManagerServiceImpl();
+		return instance;
+	}
+	
+	
+	
+	@Override
+	public List<WorkManagementVO> getWorkList() {
+		return dao.getWorkList();
+	}
+
+	@Override
+	public int insertMemInfo(MemberInfoVO memInfoVo) {
+		return dao.insertMemInfo(memInfoVo);
+	}
+
+	@Override
+	public int updateMemInfo(MemberInfoVO memberInfoVo) {
+		return dao.updateMemInfo(memberInfoVo);
+	}
+
+	@Override
+	public int deleteMemInfo(int infoNo) {
+		return dao.deleteMemInfo(infoNo);
+	}
+
+	@Override
+	public List<MemberInfoVO> getMemInfoList() {
+		return dao.getMemInfoList();
+	}
+
+	@Override
+	public MemberInfoVO getMemInfo(int memNo) {
+		return dao.getMemInfo(memNo);
+	}
+
+	@Override
+	public int insertSal(SalaryVO salVo) {
+		return dao.insertSal(salVo);
+	}
+
+	@Override
+	public List<SalaryVO> getSalaryList() {
+		return dao.getSalaryList();
+	}
+
+	@Override
+	public SalaryVO getSalary(int memNo) {
+		return dao.getSalary(memNo);
+	}
+
+}

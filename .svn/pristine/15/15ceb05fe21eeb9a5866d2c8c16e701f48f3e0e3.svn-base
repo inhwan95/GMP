@@ -1,0 +1,61 @@
+package ddit.controller;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ddit.service.IMemberService;
+import ddit.service.MemberServiceImpl;
+import ddit.vo.MemberVO;
+
+/**
+ * Servlet implementation class joinController
+ */
+@WebServlet("/member/join.do")
+public class joinController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/view/joinPage.jsp").forward(request, response);
+		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		doGet(request, response);
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; utf-8");
+		
+		String mem_nm = request.getParameter("mem_nm");
+		String mem_tel = request.getParameter("mem_tel");
+		String mem_addr1 = request.getParameter("mem_addr1");
+		String mem_addr2 = request.getParameter("mem_addr2");
+		String mem_birth = request.getParameter("mem_birth");
+		String mem_id = request.getParameter("mem_id");
+		String mem_pw = request.getParameter("mem_pw");
+		String mem_mail = request.getParameter("mem_mail");
+		
+		
+		IMemberService service = MemberServiceImpl.getInstance();
+		MemberVO memVo = new MemberVO();
+		memVo.setMem_nm(mem_nm);
+		memVo.setMem_tel(mem_tel);
+		memVo.setMem_addr1(mem_addr1);
+		memVo.setMem_addr2(mem_addr2);
+		memVo.setMem_birth(mem_birth);
+		memVo.setMem_id(mem_id);
+		memVo.setMem_pw(mem_pw);
+		memVo.setMem_mail(mem_mail);
+
+		int count = service.join(memVo);
+		System.out.println(memVo);
+		System.out.println(count);
+		
+		
+		response.sendRedirect(request.getContextPath() + "/member/login.do");
+	}
+
+}

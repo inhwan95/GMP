@@ -1,0 +1,52 @@
+package ddit.dao;
+
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import ddit.config.BuildedSqlMapClient;
+import ddit.vo.BoardCommentVO;
+
+public class BoardCommentDAOImpl implements IBoardCommentDAO{
+
+	private static BoardCommentDAOImpl instance = null;
+	private SqlMapClient smc = null;
+	private BoardCommentDAOImpl() {
+		if(smc==null) smc = BuildedSqlMapClient.getSqlMapClient();
+	}
+	
+	public static BoardCommentDAOImpl getInstance() {
+		if(instance==null) instance = new BoardCommentDAOImpl();
+		return instance;
+	}
+
+
+	@Override
+	public int insertBoardComment(BoardCommentVO comVO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public int updateBoardComment(String comContent) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public int deleteBoardComment(int comm_no) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<BoardCommentVO> getBoardList(int board_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+}

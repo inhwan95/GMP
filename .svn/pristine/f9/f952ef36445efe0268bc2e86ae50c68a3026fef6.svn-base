@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/bootstrap.css">
+<script type="text/javascript" src="js/bootstrap.js"></script>
+</head>
+<body>
+<style>
+div {min-height: 100px;}
+.row {background-color: #777;}
+.col {background-color: #555;}
+</style>
+<div class="container-fluid mt-5" style="background-color:#999; min-height:500px">
+	<div class="row">
+		<div class="col col-sm-4" style="background-color:yellow;">ddd</div>
+		<div class="col col-sm-4" style="background-color:green;">ccc</div>
+	</div>
+		<div class="row no-gutter">
+			<div class="col col-lg-6">
+				<table class="table table-sm table-hover">
+					<tbody>
+						<tr>
+							<td>a</td>
+							<td>b</td>
+							<td>c</td>
+							<td>d</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+			<div class="col col-sm-4" style="background-color: yellow;">ddd</div>
+			<div class="col col-sm-4" style="background-color: green;">ccc</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<button type="button" class="btn btn-sm btn-dark">버튼</button>
+			<button type="button" class="btn btn-sm btn-danger">버튼</button>
+			<button type="button" class="btn btn-sm btn-info">버튼</button>
+			<button type="button" class="btn btn-sm btn-primary">버튼</button>
+			<button type="button" class="btn btn-sm btn-warning">버튼</button>
+			<button type="button" class="btn btn-sm btn-outline-danger">버튼</button>
+			<button type="button" class="btn btn-sm btn-outline-info">버튼</button>
+			<button type="button" class="btn btn-sm btn-outline-primary">버튼</button>
+			<button type="button" class="btn btn-sm btn-outline-warning">버튼</button>
+			<button type="button" class="btn btn-sm btn-outline-dark">버튼</button>
+		</div>
+	</div>
+</body>
+</html>

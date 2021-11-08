@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="board_comment">
+
+	<!-- BOARD_COMMENT(게시판 댓글) 테이블 데이터 생성 -->
+	<insert id="boardCommentInsert" parameterClass="board_commentVO">
+		INSERT INTO BOARD_COMMENT (COMM_NO,BOARD_NO,MEM_NO,COMM_CONTENT,COMM_TIME) 
+			VALUES (SEQ_BOARD_COMMENT.NEXTVAL,#board_no#,#mem_no#,#comm_content#,SYSDATE)
+	</insert>
+	
+	<!-- BOARD_COMMENT(게시판 댓글) 테이블 데이터 수정 -->
+	<update id="boardCommentUpdate" parameterClass="board_commentVO">
+		UPDATE BOARD_COMMENT 
+			SET COMM_CONTENT=#comm_content#
+		WHERE COMM_NO=#comm_no#
+	</update>
+	
+	<!-- BOARD_COMMENT(게시판 댓글) 테이블 전체 데이터 조회 -->
+	<select id="getBoardCommentList" resultClass="board_commentVO" parameterClass="int">
+		SELECT bc.*, mem.MEM_NM
+		FROM BOARD_COMMENT bc
+		JOIN MEMBER mem ON bc.MEM_NO=mem.MEM_NO
+		WHERE BOARD_NO=#board_no#
+		ORDER BY COMM_NO ASC
+	</select>
+	
+	<!-- BOARD_COMMENT(게시판 댓글) 테이블 데이터 삭제 -->
+	<delete id="boardDelete" parameterClass="board_commentVO">
+		DELETE FROM BOARD_COMMENT WHERE COMM_NO=#comm_no#
+	</delete>
+	
+	<!-- 댓글 게시자를 찾는 쿼리 -->
+	<select id="commentWriter" parameterClass="board_commentVO" resultClass="int">
+		SELECT MEM_NO FROM BOARD_COMMENT WHERE COMM_NO=#comm_no#
+	</select>
+	
+
+
+
+
+
+
+
+</sqlMap>

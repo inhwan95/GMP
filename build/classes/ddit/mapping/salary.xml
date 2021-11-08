@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="salary">
+
+
+	<!-- SALARY(급여) 테이블 데이터 생성 -->
+	<insert id="salaryInsert" parameterClass="salaryVO">
+		insert into salary (salary_no,mem_no,salary,salary_nm,payday) 
+			values (seq_salary.nextval,#mem_no#,#salary#,#salary_nm#,sysdate)
+	</insert>
+	
+	<!-- SALARY(급여) 테이블 전체 데이터 조회 -->
+	<select id="getSalaryList" resultClass="salaryVO">
+		select * from salary
+	</select>
+	
+
+</sqlMap>

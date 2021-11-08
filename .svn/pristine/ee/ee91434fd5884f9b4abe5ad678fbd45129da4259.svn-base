@@ -1,0 +1,71 @@
+@charset "UTF-8";
+
+.kakao-login-btn{
+   padding-right: 50px;
+}
+
+.navigation{
+   height: 100px;
+}
+
+.jumbotron{
+
+   position: absolute;
+   top: 50%;
+   display: flex;
+   margin-top: 150px;  
+   text-align: center; 
+   margin-left: -300px;	
+   left: 50%;
+}
+
+#form{
+   width: 500px;
+}
+
+.logout{
+   list-style: none;
+}
+
+.col-lg-4{
+   display: inline-block;
+}
+
+.navbar-header{
+   padding: 0% 40%;
+   justify-content: center;
+}
+
+.navbar-default{
+   border-bottom: 1px solid gray;
+
+}
+.main{
+   display: flex;
+   flex-direction: column;
+   gap: 30px;
+}
+
+.navbar-brand{
+   padding: 100px;
+   width: 300px;   
+}
+
+/* 로고 사진 */
+
+/* .navbar-header{ */
+/*    display: flex; */
+/*    gap: 40px; */
+/*    width: 300px; */
+/*    height: 150px; */
+/* } */
+
+  p {
+        font-family: "Arial Black", sans-serif;
+        font-size: 60px;
+        font-weight: bold;
+        color: #4E5F76;
+      }
+ .s1{
+ 	text-shadow: 4px 4px 0px #708098, 8px 8px 0px #9AB4D4, 12px 12px 0px #B9CDE3;  
+ }

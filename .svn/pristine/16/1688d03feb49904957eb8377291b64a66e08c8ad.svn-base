@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="member_info">
+
+	<!-- MEMBER_INFO(직원정보변경) 테이블 데이터 생성 -->
+	<insert id="memberInfoInsert" parameterClass="member_infoVO">
+		INSERT INTO MEMBER_INFO (INFO_NO,MEM_NO,POSI_NO,DEPT_NO,CHANGE_DATE) 
+			VALUES (SEQ_MEMBER_INFO.NEXTVAL,#mem_no#,#posi_no#,#dept_no#,SYSDATE)
+	</insert>
+	
+	<!-- MEMBER_INFO(직원정보변경) 테이블 데이터 수정 -->
+<!-- 	<update id="memberInfoUpdate" parameterClass="member_infoVO"> -->
+<!-- 		UPDATE MEMBER_INFO  -->
+<!-- 			SET MEM_TEL=#mem_tel# , -->
+<!-- 				MEM_ADDR1=#mem_addr1# , -->
+<!-- 				MEM_ADDR2=#mem_addr2#  -->
+<!-- 		WHERE MEM_NO=#mem_no# -->
+<!-- 	</update> -->
+	
+	<!-- MEMBER_INFO(직원정보변경) 테이블 전체 데이터 조회 -->
+	<select id="getMemberInfoList" resultClass="member_infoVO">
+		SELECT * FROM MEMBER_INFO
+	</select>
+	
+	<!-- MEMBER_INFO(직원정보변경) 테이블 데이터 삭제 -->
+	<delete id="memberInfoDelete" parameterClass="int">
+		DELETE FROM MEMBER_INFO 
+		WHERE MEM_NO=#MEM_NO#
+	</delete>
+	
+
+
+
+
+
+
+
+</sqlMap>

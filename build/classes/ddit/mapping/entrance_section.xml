@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="entrance_section">
+
+
+	<!-- ENTRANCE_SECTION(출입대장 구분) 테이블 데이터 생성 -->
+	<insert id="entranceSectionInsert" parameterClass="entrance_sectionVO">
+		INSERT INTO ENTRANCE_SECTION (ENT_IDX,ESEC_IDX,MEM_NO) 
+			VALUES (SEQ_ENTRANCE_SECTION.NEXTVAL,#esec_idx#,#mem_no#)
+	</insert>
+	
+	<!-- ENTRANCE_SECTION(출입대장 구분) 테이블 전체 데이터 조회 -->
+	<select id="getEntranceSectionList" resultClass="entrance_sectionVO">
+		SELECT * FROM ENTRANCE_SECTION
+	</select>
+	
+
+</sqlMap>

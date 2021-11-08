@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="sanction_document">
+
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 데이터 생성 -->
+	<insert id="sanctionDocumentInsert" parameterClass="sanction_documentVO">
+		INSERT INTO SANCTION_DOCUMENT 
+		VALUES (SEQ_SANCTION_DOCUMENT.NEXTVAL, #san_nm#, sysdate ,null,#san_content#, #san_deadline# ,'0',#san_title#)
+	</insert>
+	
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 데이터 수정 -->
+	<update id="sanctionDocumentUpdate" parameterClass="sanction_documentVO">
+		UPDATE SANCTION_DOCUMENT 
+			SET SAN_CONTENT=#san_content# ,
+				SAN_STATUS=#san_status#
+		WHERE SAN_NO=#san_no#
+	</update>
+	
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 전체 데이터 조회 -->
+	<select id="getSanctionDocumentList" resultClass="sanction_documentVO">
+		SELECT * FROM SANCTION_DOCUMENT
+	</select>
+	
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 데이터 삭제 -->
+	<delete id="sanctionDocumentDelete" parameterClass="int">
+		DELETE FROM SANCTION_DOCUMENT 
+		WHERE SAN_NO=#san_no#
+	</delete>
+	
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 결재상태 구분 데이터 조회 -->
+	<select id="getStatusDoc" parameterClass="string" resultClass="sanction_documentVO">
+		SELECT * FROM SANCTION_DOCUMENT WHERE SAN_STATUS=#san_status#
+	</select>
+
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 세부사항(서류번호) -->
+	<select id="getDetail" parameterClass="int" resultClass="sanction_documentVO">
+	    SELECT sd.*, mem.MEM_NM, dept.DEPT_NM, posi.POSI_NM
+	      FROM SANCTION_DOCUMENT sd JOIN CONFIRMER cf
+			ON sd.SAN_NO = cf.SAN_NO
+			JOIN MEMBER mem
+			ON cf.MEM_NO = mem.MEM_NO
+			JOIN DEPARTMENT dept
+			ON mem.DEPT_NO = dept.DEPT_NO
+			JOIN POSITION posi
+			ON mem.POSI_NO = posi.POSI_NO
+			WHERE sd.SAN_NO=#san_no#
+			AND cf.CONF_STEP=1
+	</select>
+	<!-- 뭐더라 vo 추가하면 될걸 이제 -->
+	
+	
+<!-- 	승인자 테이블 인서트 -->
+	<insert id="insertConfirmer1" parameterClass="sanction_documentVO">
+		INSERT INTO CONFIRMER
+		VALUES(SEQ_CONFIRMER.NEXTVAL, (SELECT MAX(SAN_NO) FROM SANCTION_DOCUMENT), #mem_no1#, 1, 1, #mem_nm1#)
+	</insert>
+	
+	<insert id="insertConfirmer2" parameterClass="sanction_documentVO">
+		INSERT INTO CONFIRMER
+		VALUES(SEQ_CONFIRMER.NEXTVAL, (SELECT MAX(SAN_NO) FROM SANCTION_DOCUMENT), #mem_no2#, 2, 0, #mem_nm2#)
+	</insert>
+	
+	<insert id="insertConfirmer3" parameterClass="sanction_documentVO">
+		INSERT INTO CONFIRMER
+		VALUES(SEQ_CONFIRMER.NEXTVAL, (SELECT MAX(SAN_NO) FROM SANCTION_DOCUMENT), #mem_no3#, 3, 0, #mem_nm3#)
+	</insert>
+	
+
+
+
+
+
+
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

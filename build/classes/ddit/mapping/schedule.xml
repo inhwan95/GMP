@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="schedule">
+
+	<!-- SCHEDULE(일정) 테이블 데이터 생성 -->
+	<insert id="scheduleInsert" parameterClass="scheduleVO">
+		INSERT INTO SCHEDULE (SCH_NO,SSEC_NO,DEPT_NO,MEM_NO,SCH_TITLE,SCH_START,SCH_END,SCH_PLACE,SCH_CONTENT) 
+			VALUES (SEQ_SCHEDULE.NEXTVAL,#ssec_no#,#dept_no#,#mem_no#,#sch_title#,SYSDATE,SYSDATE,#sch_place#,#sch_content#)
+	</insert>
+	
+	<!-- SCHEDULE(일정) 테이블 데이터 수정 -->
+	<update id="scheduleUpdate" parameterClass="scheduleVO">
+		UPDATE SCHEDULE 
+			SET SCH_TITLE=#sch_title#,
+				SCH_START=#sch_start#,
+				SCH_END=#sch_end#,
+				SCH_PLACE=#sch_place#,
+				SCH_CONTENT=#sch_content#
+		WHERE SCH_NO=#sch_no#
+	</update>
+	
+	<!-- SCHEDULE(일정) 테이블 전체 데이터 조회 -->
+	<select id="getScheduleList" resultClass="scheduleVO">
+		SELECT * FROM SCHEDULE
+	</select>
+	
+	<!-- SCHEDULE(일정) 테이블 데이터 삭제 -->
+	<delete id="scheduleDelete" parameterClass="int">
+		DELETE FROM SCHEDULE 
+		WHERE SCH_NO=#SCH_NO#
+	</delete>
+
+	<insert id="insertSchedule" parameterClass="scheduleMemberVO" >
+		insert into SCHEDULE
+			values (
+			 SEQ_SCHEDULE.NEXTVAL,
+			 3,
+			 #dept_no#,
+			 #mem_no#,
+			 #title#,
+			 #start#,
+			 #end#,
+			 '테스트',
+			 '테스트',
+			 #id#,
+			 #allDayStr#,
+			 SEQ_SCHEDULE_IDX.NEXTVAL
+		     )
+	</insert>
+	
+	<select id="loadSchedule" resultClass="scheduleMemberVO"  parameterClass="int">
+		select DEPT_NO,
+                 MEM_NO,
+                 SCH_IDX as idx, 
+		         SCH_TITLE as title, 
+		         SCH_START as "start", 
+		         SCH_END as "end" , 
+		         SCH_ALLDAY as allDayStr, 
+		         SCH_ID as id  
+		from SCHEDULE
+        where MEM_NO= #mem_no#
+		
+	</select>
+	
+	<delete id="deleteOneSchedule"  parameterClass="int">
+		delete from SCHEDULE 
+        where SCH_IDX = #idx#
+	</delete>
+	
+	<delete id="deleteAllSchedule">
+		delete from SCHEDULE
+	</delete>
+	
+</sqlMap>

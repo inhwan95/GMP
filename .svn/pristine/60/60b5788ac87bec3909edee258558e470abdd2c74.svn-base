@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="sanction_document">
+
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 데이터 생성 -->
+	<insert id="sanctionDocumentInsert" parameterClass="sanction_documentVO">
+		INSERT INTO SANCTION_DOCUMENT (SAN_NO,SAN_NM,SAN_WRITE_DATE,SAN_CONF_DATE,SAN_CONTENT,SAN_DEADLINE,SAN_STATUS) 
+			VALUES (SEQ_SANCTION_DOCUMENT.NEXTVAL,#san_nm#,SYSDATE,NULL,#san_content#,SYSDATE,#san_status#)
+	</insert>
+	
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 데이터 수정 -->
+	<update id="sanctionDocumentUpdate" parameterClass="sanction_documentVO">
+		UPDATE SANCTION_DOCUMENT 
+			SET SAN_CONTENT=#san_content# ,
+				SAN_STATUS=#san_status#
+		WHERE SAN_NO=#san_no#
+	</update>
+	
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 전체 데이터 조회 -->
+	<select id="getSanctionDocumentList" resultClass="sanction_documentVO">
+		SELECT * FROM SANCTION_DOCUMENT
+	</select>
+	
+	<!-- SANCTION_DOCUMENT(결재서류) 테이블 데이터 삭제 -->
+	<delete id="sanctionDocumentDelete" parameterClass="int">
+		DELETE FROM SANCTION_DOCUMENT 
+		WHERE SAN_NO=#SAN_NO#
+	</delete>
+	
+
+
+
+
+
+
+
+</sqlMap>

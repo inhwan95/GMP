@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="schedule_section">
+
+	<!-- SCHEDULE_SECTION(일정구분) 테이블 데이터 생성 -->
+	<insert id="scheduleSectionInsert" parameterClass="schedule_sectionVO">
+		INSERT INTO SCHEDULE_SECTION (SSEC_NO,DEPT_NO,SSEC_NM) 
+			VALUES (SEQ_SCHEDULE_SECTION.NEXTVAL,#dept_no#,#ssec_nm#)
+	</insert>
+	
+	<!-- SCHEDULE_SECTION(일정구분) 테이블 데이터 수정 -->
+	<update id="scheduleSectionUpdate" parameterClass="schedule_sectionVO">
+		UPDATE SCHEDULE_SECTION 
+			SET SSEC_NM=#ssec_nm#
+		WHERE SSEC_NO=#ssec_no#
+	</update>
+	
+	<!-- SCHEDULE_SECTION(일정구분) 테이블 전체 데이터 조회 -->
+	<select id="getScheduleSectionList" resultClass="schedule_sectionVO">
+		SELECT * FROM SCHEDULE_SECTION
+	</select>
+	
+	<!-- SCHEDULE_SECTION(일정구분) 테이블 데이터 삭제 -->
+	<delete id="scheduleSectionDelete" parameterClass="int">
+		DELETE FROM SCHEDULE_SECTION 
+		WHERE SSEC_NO=#ssec_no#
+	</delete>
+	
+
+
+
+
+
+
+
+</sqlMap>

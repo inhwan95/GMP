@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD sql Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+   
+<sqlMap namespace="board_file">
+	
+	<!-- BOARD_FILE(게시판 파일) 테이블 데이터 생성 -->
+	<insert id="boardFileInsert" parameterClass="board_fileVO">
+		INSERT INTO BOARD_FILE (FILE_NO,BOARD_NO,FILE_NM,FILE_TYPE,FILE_LOCATION) 
+			VALUES (SEQ_BOARD_FILE.NEXTVAL,#board_no#,#file_nm#,#file_type#,#file_location#)
+	</insert>
+	
+	<!-- BOARD_FILE(게시판 파일) 테이블 데이터 수정 -->
+	<update id="boardFileUpdate" parameterClass="board_fileVO">
+		UPDATE BOARD_FILE 
+			SET FILE_NM=#file_nm# ,
+				FILE_TYPE=#file_type# ,
+				FILE_LOCATION=#file_location# 
+		WHERE FILE_NO=#file_no#
+	</update>
+	
+	<!-- BOARD_FILE(게시판 파일) 테이블 전체 데이터 조회 -->
+	<select id="getBoardFile" resultClass="board_fileVO">
+		SELECT * FROM BOARD_FILE
+	</select>
+	
+	<!-- BOARD_FILE(게시판 파일) 테이블 데이터 삭제 -->
+	<delete id="boardFileDelete" parameterClass="int">
+		DELETE FROM BOARD_FILE 
+		WHERE FILE_NO=#FILE_NO#
+	</delete>
+	
+
+
+
+
+
+
+
+</sqlMap>
